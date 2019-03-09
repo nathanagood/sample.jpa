@@ -3,13 +3,9 @@ package application.servlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +20,6 @@ import javax.transaction.SystemException;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.stream.StreamSupport;
 
 /**
@@ -36,8 +31,6 @@ public class JPAServlet extends HttpServlet {
     /**  */
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = LoggerFactory.getLogger(JPAServlet.class);
-
     @Autowired
     private ThingRepository thingRepository;
 
@@ -48,7 +41,7 @@ public class JPAServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         PrintWriter writer = response.getWriter();
         writer.println("Hello JPA World");
 
@@ -57,22 +50,19 @@ public class JPAServlet extends HttpServlet {
             createThing(writer);
             retrieveThing(writer);
         } catch (Exception e) {
-            logger.error("Error in servlet:", e);
             writer.println("Something went wrong. Caught exception " + e);
         }
-
     }
 
     @Transactional
-    public void createThing(PrintWriter writer) throws NamingException, NotSupportedException, SystemException, IllegalStateException, SecurityException, HeuristicMixedException, HeuristicRollbackException, RollbackException {
+    public void createThing(PrintWriter writer) throws IllegalStateException, SecurityException {
         Thing thing = new Thing();
         thing = thingRepository.save(thing);
-        int id = thing.getId();
         writer.println("Created Thing: " + thing);
     }
 
     @SuppressWarnings("unchecked")
-    public void retrieveThing(PrintWriter writer) throws SystemException, NamingException {
+    public void retrieveThing(PrintWriter writer) {
         Iterable<Thing> things = thingRepository.findAll();
         writer.println("Query returned " + StreamSupport.stream(things.spliterator(), false).count() + " things");
 
