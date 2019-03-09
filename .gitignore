@@ -2,7 +2,10 @@ target/
 .classpath
 .project
 .settings/
+.vscode/
+.idea/
 bin/
 build/
 .gradle/
 !.mvn/wrapper/
+.DS_Store
