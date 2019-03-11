@@ -13,7 +13,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.-->
 <server description="Sample Liberty server">
-    <httpEndpoint httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint">
+    <httpEndpoint host="*" httpPort="${default.http.port}" httpsPort="${default.https.port}" id="defaultHttpEndpoint">
         <tcpOptions soReuseAddr="true" />
     </httpEndpoint>
     <webContainer deferServletLoad="false"/>
