@@ -1,2 +1,9 @@
 # debug: true
-spring.banner.location=classpath:banner.txt
+spring:
+  banner:
+    location: "classpath:banner.txt"
+
+logging:
+  level:
+    org:
+      hibernate: FATAL
